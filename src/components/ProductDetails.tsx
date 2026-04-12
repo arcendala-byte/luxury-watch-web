@@ -1,14 +1,15 @@
 "use client"
 
 import { useState, useRef } from 'react';
-import { motion, Variants, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, Variants, AnimatePresence, useScroll } from 'framer-motion';
 import { ChevronLeft, ChevronDown, ShieldCheck, Truck, RotateCcw, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 // Components
 import WhatsAppButton from '@/components/WhatsAppButton';
 import InquiryModal from '@/components/InquiryModal';
 import RelatedProducts from '@/components/RelatedProducts';
-import Link from 'next/link';
 import { Product } from '@/types/product';
 
 // 1. Animation Variants
@@ -21,8 +22,20 @@ const staggerContainer: Variants = {
   visible: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
 };
 
+// Define the Extended Type to match what your API sends
+interface ExtendedProduct extends Product {
+  images?: string[];
+  isLimited?: boolean;
+  specs?: {
+    movement?: string;
+    case?: string;
+    diameter?: string;
+    waterResistance?: string;
+  };
+}
+
 interface Props {
-  product: Product & { images?: string[]; isLimited?: boolean; specs?: any };
+  product: ExtendedProduct;
 }
 
 export default function ProductDetails({ product }: Props) {
@@ -31,14 +44,16 @@ export default function ProductDetails({ product }: Props) {
   const [activeImage, setActiveImage] = useState<string | null>(null);
 
   // Parallax Ref
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
+  const containerRef = useRef<HTMLElement>(null);
+  
   const currentDisplayImage = activeImage || product.image;
   const galleryImages = product.images || [product.image];
+
+  // Helper to format image paths safely
+  const formatImagePath = (path: string) => {
+    if (path.startsWith('/') || path.startsWith('http')) return path;
+    return `/${path}`;
+  };
 
   return (
     <main ref={containerRef} className="min-h-screen bg-black text-white pt-32 pb-20 selection:bg-[#D4AF37] selection:text-black">
@@ -99,15 +114,13 @@ export default function ProductDetails({ product }: Props) {
                 </div>
               )}
 
-              <motion.img
-                src={
-                  currentDisplayImage.startsWith('/') || currentDisplayImage.startsWith('http')
-                    ? currentDisplayImage
-                    : `/${currentDisplayImage}`
-                }
+              <Image
+                src={formatImagePath(currentDisplayImage)}
                 alt={product.name}
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.3]"
-                style={{ transformOrigin: 'center' }}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.3]"
                 onMouseMove={(e) => {
                   const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
                   const x = ((e.clientX - left) / width) * 100;
@@ -116,7 +129,6 @@ export default function ProductDetails({ product }: Props) {
                 }}
               />
               
-              {/* Luxury Vignette Overlay */}
               <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.4)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             </motion.div>
 
@@ -131,14 +143,12 @@ export default function ProductDetails({ product }: Props) {
                       currentDisplayImage === img ? 'border-[#D4AF37]' : 'border-white/5 hover:border-white/20'
                     }`}
                   >
-                    <img
-                      src={
-                        img.startsWith('/') || img.startsWith('http')
-                          ? img
-                          : `/${img}`
-                      }
+                    <Image
+                      src={formatImagePath(img)}
                       alt={`${product.name} view ${index}`}
-                      className={`w-full h-full object-cover transition-opacity duration-500 ${currentDisplayImage === img ? 'opacity-100' : 'opacity-40 hover:opacity-80'}`}
+                      fill
+                      sizes="120px"
+                      className={`object-cover transition-opacity duration-500 ${currentDisplayImage === img ? 'opacity-100' : 'opacity-40 hover:opacity-80'}`}
                     />
                   </button>
                 ))}
@@ -193,7 +203,6 @@ export default function ProductDetails({ product }: Props) {
               </motion.p>
             )}
 
-            {/* Inquire Button */}
             <motion.button
               onClick={() => setIsInquiryOpen(true)}
               variants={fadeInUp}
