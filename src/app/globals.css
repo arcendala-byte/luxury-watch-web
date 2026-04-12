@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a0a; /* Deep luxury black */
+  --foreground: #f5f5f7; /* Soft off-white */
+  --gold: #d4af37;       /* Luxury gold accent */
+}
+
+/* Base smooth scrolling and behavior */
+html {
+  scroll-behavior: smooth;
+  background-color: var(--background);
+}
+/* Ensure sections have enough padding for the fixed navbar */
+section, .scroll-mt-20 {
+  scroll-margin-top: 5rem; /* Adjust based on your Navbar height */
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Text Selection - Gold highlight */
+::selection {
+  background-color: var(--gold);
+  color: #000000;
+}
+
+/* Hide scrollbar for a cleaner look while maintaining scroll functionality */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
