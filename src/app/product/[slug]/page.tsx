@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import ProductDetails from '@/components/ProductDetails';
-import { Product } from '@/types/product';
 
 interface Props {
   // In Next.js 16, params and searchParams are Promises
@@ -28,12 +27,10 @@ export default async function ProductPage({ params, searchParams }: Props) {
       return notFound();
     }
 
-    // We type it as any here during the fetch because we know the 
-    // component's internal ExtendedProduct interface will handle the validation.
+    // Fetch the data as a generic object
     const productData = await res.json();
 
     // 4. Render the ProductDetails component
-    // No more 'as any' needed here because ProductDetails is now flexible
     return <ProductDetails product={productData} />;
     
   } catch (error) {
