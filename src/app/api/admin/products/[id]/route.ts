@@ -1,12 +1,20 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prismadb';
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest, 
+  { params }: { params: Promise<{ id: string }> } // 1. Set params as a Promise
 ) {
   try {
-    const productId = parseInt(params.id);
+    // 2. Await the params to get the ID
+    const { id } = await params;
+    
+    // 3. Parse the ID to an integer for Prisma
+    const productId = parseInt(id);
+
+    if (isNaN(productId)) {
+      return NextResponse.json({ error: 'Invalid Product ID' }, { status: 400 });
+    }
 
     await prisma.product.delete({
       where: { id: productId },
