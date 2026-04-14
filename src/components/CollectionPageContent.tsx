@@ -96,15 +96,17 @@ export default function CollectionPageContent() {
             {activeBrand && activeBrand !== 'All' && (
               <p className="text-white/40 max-w-xl mt-4 text-sm">
                 {(() => {
-                  switch (activeBrand) {
+                  switch (activeBrand.toLowerCase()) {
                     case 'heritage':
-                      return 'Our Heritage Series blends vintage styling with modern precision.';
-                    case 'lux':
-                      return 'Lux Editions showcase opulent materials and exclusive runs.';
-                    case 'tech':
-                      return 'Tech Skeleton pieces expose the mechanics for collectors.';
+                      return 'Our Heritage Series blends vintage styling with modern precision and timeless elegance.';
+                    case 'apex':
+                      return 'Apex Editions represent the pinnacle of dark aesthetics and high-performance materials.';
+                    case 'celeste':
+                      return 'Celestial masterpieces featuring complex tourbillons and astronomical complications.';
+                    case 'luna':
+                      return 'Inspired by the lunar cycle, these pieces feature exquisite moon-phase movements.';
                     default:
-                      return '';
+                      return `Explore the exceptional craftsmanship of the ${activeBrand} collection.`;
                   }
                 })()}
               </p>

@@ -49,7 +49,7 @@ export default function Craftsmanship() {
 
   return (
     // FIX: Added h-[300vh] so the sticky container has room to scroll
-    <section ref={containerRef} className="relative bg-[#0a0a0a] h-[300vh]">
+    <section id="craftsmanship" ref={containerRef} className="relative bg-[#0a0a0a] h-[300vh]">
       
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden border-b border-white/5">
         

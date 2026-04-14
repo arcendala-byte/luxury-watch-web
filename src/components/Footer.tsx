@@ -79,7 +79,7 @@ export default function Footer() {
             links={[
               { label: 'Collections', href: '/collection' },
               { label: 'Our Heritage', href: '/heritage' },
-              { label: 'Craftsmanship', href: '#' },
+              { label: 'Craftsmanship', href: '/heritage#craft' },
               { label: 'Boutiques', href: '/boutiques' },
             ]} 
           />
@@ -87,8 +87,8 @@ export default function Footer() {
           <FooterColumn 
             title="Client Care" 
             links={[
-              { label: 'Contact Us', href: '#' },
-              { label: 'Private Viewings', href: '#' },
+              { label: 'Contact Us', href: '/contact' },
+              { label: 'Private Viewings', href: '/contact' },
               { label: 'Shipping & Returns', href: '#' },
               { label: 'Warranty', href: '#' },
             ]} 

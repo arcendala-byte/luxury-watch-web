@@ -54,7 +54,7 @@ export default function HeritagePage() {
       />
 
       {/* SECTION 1: PARALLAX HERO */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section id="heritage" className="relative h-screen flex items-center justify-center overflow-hidden">
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0">
           <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1547996160-81dfa63595dd?q=80&w=2000')] bg-cover bg-center" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-[#f4f1ea]" />
@@ -74,7 +74,7 @@ export default function HeritagePage() {
       </section>
 
       {/* SECTION 2: THE ANATOMY OF TIME (New Interesting Section) */}
-      <section className="bg-[#f4f1ea] py-40 px-6 relative z-10">
+      <section id="craft" className="bg-[#f4f1ea] py-40 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-24 items-center">
             <div className="relative h-[600px]">
@@ -112,7 +112,7 @@ export default function HeritagePage() {
         </div>
         
         {/* TIMELINE OVERLAY */}
-        <div className="max-w-7xl mx-auto mt-40 grid md:grid-cols-4 gap-8">
+        <div id="timeline" className="max-w-7xl mx-auto mt-40 grid md:grid-cols-4 gap-8">
           {timeline.map((item, index) => (
             <motion.div 
               key={index} 
@@ -129,7 +129,7 @@ export default function HeritagePage() {
       </section>
 
       {/* SECTION 3: THE VAULT */}
-      <section className="bg-black py-60 relative overflow-hidden flex items-center justify-center">
+      <section id="vault" className="bg-black py-60 relative overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <h2 className="text-[40vw] font-black text-white italic whitespace-nowrap -translate-x-1/4">LEGACY</h2>
         </div>

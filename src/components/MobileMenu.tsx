@@ -42,16 +42,16 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       count: '08',
       links: [
         { name: 'All Timepieces', href: '/collection' },
-        { name: 'Heritage Series', href: '/collection?cat=heritage' },
-        { name: 'Lux Editions', href: '/collection?cat=lux' },
-        { name: 'Tech Skeleton', href: '/collection?cat=tech' },
+        { name: 'Heritage Series', href: '/collection?category=Heritage' },
+        { name: 'Apex Editions', href: '/collection?category=Apex' },
+        { name: 'Astronomical', href: '/collection?category=Celeste' },
       ]
     },
     {
       id: 'heritage',
       title: 'Heritage',
       links: [
-        { name: 'Our Story', href: '/heritage' },
+        { name: 'Our Story', href: '/heritage#heritage' },
         { name: 'Craftsmanship', href: '/heritage#craft' },
         { name: 'Historical Timeline', href: '/heritage#timeline' },
         { name: 'Archive Vault', href: '/heritage#vault' },

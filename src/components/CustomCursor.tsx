@@ -16,21 +16,42 @@ export default function CustomCursor() {
       cursorY.set(e.clientY - 16);
     };
 
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const isInteractive = 
+        target.tagName.toLowerCase() === 'a' || 
+        target.tagName.toLowerCase() === 'button' ||
+        target.tagName.toLowerCase() === 'input' ||
+        target.closest('a') !== null ||
+        target.closest('button') !== null;
+      
+      setIsHovering(isInteractive);
+    };
+
     window.addEventListener("mousemove", moveMouse);
-    return () => window.removeEventListener("mousemove", moveMouse);
+    window.addEventListener("mouseover", handleMouseOver);
+    
+    return () => {
+      window.removeEventListener("mousemove", moveMouse);
+      window.removeEventListener("mouseover", handleMouseOver);
+    };
   }, [cursorX, cursorY]);
 
   return (
     <motion.div
-      className="fixed top-0 left-0 w-8 h-8 rounded-full border border-gold pointer-events-none z-[9999] hidden md:block"
+      className="fixed top-0 left-0 w-8 h-8 rounded-full border border-[#D4AF37] pointer-events-none z-[9999] hidden md:block"
       style={{
         x: cursorX,
         y: cursorY,
       }}
       animate={{
         scale: isHovering ? 2.5 : 1,
-        // animate to/from a fully transparent rgba value instead of ‘transparent’
-        backgroundColor: isHovering ? "rgba(212, 175, 55, 0.1)" : "rgba(0,0,0,0)",
+        backgroundColor: isHovering ? "rgba(212, 175, 55, 0.15)" : "transparent",
+        borderColor: isHovering ? "rgba(212, 175, 55, 0.8)" : "rgba(212, 175, 55, 0.4)",
+      }}
+      transition={{
+        scale: { type: "spring", stiffness: 300, damping: 20 },
+        backgroundColor: { duration: 0.3 }
       }}
     />
   );
