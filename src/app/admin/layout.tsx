@@ -8,30 +8,11 @@ import { Menu, X, LogOut, LayoutDashboard, Package, ShoppingCart, Users } from '
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [authChecked, setAuthChecked] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const pathname = usePathname();
   const router = useRouter();
 
-  useEffect(() => {
-    // simple client-side auth guard (credentials are set via login page)
-    try {
-      const val = localStorage.getItem('adminAuth');
-      const ok = val === 'true';
-      setIsAuthenticated(ok);
-      setAuthChecked(true);
 
-      // if not authenticated and not on login page, redirect to login
-      if (!ok && pathname !== '/admin/login') {
-        router.push('/admin/login');
-      }
-    } catch (e) {
-      setIsAuthenticated(false);
-      setAuthChecked(true);
-      if (pathname !== '/admin/login') router.push('/admin/login');
-    }
-  }, [pathname, router]);
 
   const menuItems = [
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -40,19 +21,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { label: 'Users', href: '/admin/users', icon: Users },
   ];
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      localStorage.removeItem('adminAuth');
+      await fetch('/api/auth/logout', { method: 'POST' });
     } catch (e) {
       // ignore
     }
     router.push('/admin/login');
+    router.refresh();
   };
 
-  // wait until we check auth before rendering children to avoid flicker
-  if (!authChecked) {
-    return null;
-  }
+
 
   // if login page, just show children without sidebar
   if (pathname === '/admin/login') {
@@ -113,7 +92,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto bg-black">
-        {isAuthenticated ? children : pathname === '/admin/login' ? children : null}
+        {children}
       </main>
     </div>
   );

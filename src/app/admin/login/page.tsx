@@ -15,20 +15,24 @@ export default function AdminLoginPage() {
     setError(null);
     setLoading(true);
 
-    // simple client-side hardcoded credentials
+    // Send to secure API instead of client-side check
     try {
-      if (email === 'admin@gmail.com' && password === 'admin123') {
-        try {
-          localStorage.setItem('adminAuth', 'true');
-        } catch (e) {
-          // ignore
-        }
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (res.ok) {
         router.push('/admin');
+        router.refresh(); // Refresh to update middleware state
         return;
       }
-      setError('Invalid credentials');
+      
+      const data = await res.json();
+      setError(data.error || 'Invalid credentials');
     } catch (e) {
-      setError('Unexpected error');
+      setError('Unexpected error during authentication');
     } finally {
       setLoading(false);
     }

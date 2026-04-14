@@ -1,10 +1,45 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import ProductDetails from '@/components/ProductDetails';
 
 interface Props {
-  // In Next.js 16, params and searchParams are Promises
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const baseUrl = process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : 'http://localhost:3000';
+
+  try {
+    const res = await fetch(`${baseUrl}/api/products?slug=${encodeURIComponent(slug)}`, { 
+      cache: 'force-cache' 
+    });
+    const product = await res.json();
+
+    if (!product) return { title: 'Piece Not Found | Chronos' };
+
+    return {
+      title: `${product.name} | Chronos Luxury Collection`,
+      description: product.description || `Discover the exquisite craftsmanship of the ${product.name} series. A masterpiece of horology.`,
+      openGraph: {
+        title: product.name,
+        description: product.description,
+        images: [
+          {
+            url: product.image,
+            width: 1200,
+            height: 630,
+            alt: product.name,
+          },
+        ],
+      },
+    };
+  } catch (error) {
+    return { title: 'Classic Timepiece | Chronos' };
+  }
 }
 
 export default async function ProductPage({ params, searchParams }: Props) {
