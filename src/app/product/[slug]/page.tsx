@@ -1,32 +1,33 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import ProductDetails from '@/components/ProductDetails';
+import { prisma } from '@/lib/prismadb';
 
 interface Props {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
+/**
+ * Metadata Generation
+ * Using direct Prisma calls instead of fetch to avoid 404s on Vercel
+ */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
-    : 'http://localhost:3000';
 
   try {
-    const res = await fetch(`${baseUrl}/api/products?slug=${encodeURIComponent(slug)}`, { 
-      cache: 'force-cache' 
+    const product = await prisma.product.findUnique({
+      where: { slug },
     });
-    const product = await res.json();
 
     if (!product) return { title: 'Piece Not Found | Chronos' };
 
     return {
       title: `${product.name} | Chronos Luxury Collection`,
-      description: product.description || `Discover the exquisite craftsmanship of the ${product.name} series. A masterpiece of horology.`,
+      description: product.description || `Discover the exquisite craftsmanship of the ${product.name}. A masterpiece of horology.`,
       openGraph: {
         title: product.name,
-        description: product.description,
+        description: product.description || '',
         images: [
           {
             url: product.image,
@@ -42,34 +43,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+/**
+ * Product Page Component
+ * Directly querying Prisma for maximum reliability on production
+ */
 export default async function ProductPage({ params, searchParams }: Props) {
-  // 1. Await the params and searchParams
+  // 1. Await the params
   const { slug } = await params;
-  await searchParams; // Awaited to satisfy Next.js 16 requirements
-
-  // 2. Determine the base URL for the fetch
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
-    : 'http://localhost:3000';
+  await searchParams; 
 
   try {
-    // 3. Fetch the product data using the slug
-    const res = await fetch(`${baseUrl}/api/products?slug=${encodeURIComponent(slug)}`, { 
-      cache: 'no-store' 
+    // 2. Fetch data directly from the database
+    const productData = await prisma.product.findUnique({
+      where: { slug },
     });
 
-    if (!res.ok) {
+    // 3. If no product is found in DB, trigger the 404 UI
+    if (!productData) {
       return notFound();
     }
 
-    // Fetch the data as a generic object
-    const productData = await res.json();
-
-    // 4. Render the ProductDetails component
-    return <ProductDetails product={productData} />;
+    // 4. Render the ProductDetails component with the retrieved data
+    // We convert the product to a plain object to ensure it's serializable
+    return <ProductDetails product={JSON.parse(JSON.stringify(productData))} />;
     
   } catch (error) {
-    console.error("Failed to fetch product:", error);
+    console.error("Database error on product page:", error);
     return notFound();
   }
 }

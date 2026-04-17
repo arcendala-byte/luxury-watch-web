@@ -22,17 +22,25 @@ export default function CollectionPageContent() {
 
     async function fetchBrands() {
       try {
-        const baseUrl = typeof window === 'undefined' 
-          ? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
-          : '';
-        const res = await fetch(`${baseUrl}/api/products`, { cache: 'no-store' });
-        const products: Product[] = res.ok ? await res.json() : [];
-        if (!cancelled) {
-          const uniqueBrands = ['All', ...Array.from(new Set(products.map((p) => p.brand)))];
-          setBrands(uniqueBrands);
+        // FIXED: Using relative path so it works on both localhost and Vercel automatically
+        const res = await fetch('/api/products', { 
+          cache: 'no-store',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (res.ok) {
+          const products: Product[] = await res.json();
+          if (!cancelled && Array.isArray(products)) {
+            const uniqueBrands = ['All', ...Array.from(new Set(products.map((p) => p.brand)))];
+            setBrands(uniqueBrands);
+          }
+        } else {
+          console.error("Server responded with an error:", res.status);
         }
       } catch (e) {
-        // Silently fail if fetch doesn't work
+        console.error("Failed to fetch brands from API:", e);
       }
     }
 
@@ -116,6 +124,7 @@ export default function CollectionPageContent() {
           <CollectionFilters brands={brands} />
         </div>
 
+        {/* Ensure ProductGrid is also updated to use relative paths for its internal fetch calls */}
         <ProductGrid categoryFilter={activeBrand} searchQuery={searchQuery} />
       </div>
     </main>
