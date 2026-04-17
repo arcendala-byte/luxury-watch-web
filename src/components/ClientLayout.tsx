@@ -11,17 +11,19 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith('/admin');
 
-  // Ensure scroll resets to top on route change for smooth entrance animations
   useEffect(() => {
+    // Force a scroll reset on route change
     window.scrollTo(0, 0);
   }, [pathname]);
 
   return (
-    <>
+    /* The 'relative' class here ensures Framer Motion's useScroll 
+       can calculate offsets correctly, clearing the console warning.
+    */
+    <div className="relative min-h-screen w-full">
       <CustomCursor />
       <CartDrawer />
       
-      {/* Conditional Navbar rendering for clean Admin interface */}
       {!isAdminPage && <Navbar />}
       
       <AnimatePresence mode="wait">
@@ -32,15 +34,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           exit={{ opacity: 0, y: -10, filter: "blur(10px)" }}
           transition={{ 
             duration: 0.6, 
-            ease: [0.22, 1, 0.36, 1] // Custom quint ease for luxury feel
+            ease: [0.22, 1, 0.36, 1] 
           }}
-          className={`relative min-h-screen ${!isAdminPage ? 'pt-0' : ''}`}
+          className="relative w-full"
         >
           {children}
         </motion.main>
       </AnimatePresence>
-
-      {/* Optional: Add a global localized footer here if needed outside the animation loop */}
-    </>
+    </div>
   );
 }

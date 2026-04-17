@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next"; // Added Viewport import
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientLayout from '@/components/ClientLayout';
@@ -13,10 +13,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// 1. Static Metadata (SEO)
 export const metadata: Metadata = {
   title: "Chronos | Masterpiece of Time",
   description: "Exquisite luxury timepieces crafted with mechanical perfection since 1892.",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+};
+
+// 2. Dedicated Viewport Export (Fixes the warning)
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#000000",
 };
 
 export default function RootLayout({

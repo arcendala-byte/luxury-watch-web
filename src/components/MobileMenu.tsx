@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { X, ChevronRight, ArrowRight } from 'lucide-react';
+import { X, ChevronRight, ArrowRight, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 
 interface MobileMenuProps {
@@ -80,6 +80,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         { name: 'The Commitment', href: '/warranty' },
       ]
     },
+    // Added Admin Portal to the data structure
+    { id: 'admin', title: 'Admin Portal', href: '/admin' },
   ];
 
   const toggleSection = (id: string) => {
@@ -117,13 +119,13 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               <motion.div 
                 key={item.id} 
                 variants={itemVariants}
-                className="border-b border-white/5 pb-2"
+                className={`border-b border-white/5 pb-2 ${item.id === 'admin' ? 'pt-4 border-t-0' : ''}`}
               >
                 {item.links ? (
                   <div className="flex flex-col">
                     <button
                       onClick={() => toggleSection(item.id)}
-                      className="w-full flex justify-between items-baseline py-6 group text-left"
+                      className="w-full flex justify-between items-baseline py-6 group text-left outline-none"
                     >
                       <div className="flex items-baseline gap-4">
                         <span className={`text-4xl font-extralight tracking-tighter transition-colors duration-500 ${expandedSection === item.id ? 'text-[#D4AF37]' : 'text-white'}`}>
@@ -171,9 +173,10 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   <Link
                     href={item.href!}
                     onClick={onClose}
-                    className="text-4xl font-extralight tracking-tighter text-white py-6 block hover:text-[#D4AF37] transition-colors"
+                    className={`text-4xl font-extralight tracking-tighter py-6 block transition-colors flex items-center justify-between group ${item.id === 'admin' ? 'text-white/40 hover:text-[#D4AF37]' : 'text-white hover:text-[#D4AF37]'}`}
                   >
                     {item.title}
+                    {item.id === 'admin' && <ShieldCheck size={20} className="opacity-20 group-hover:opacity-100 transition-opacity" strokeWidth={1} />}
                   </Link>
                 )}
               </motion.div>
