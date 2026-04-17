@@ -8,97 +8,92 @@ async function main() {
       name: 'Apex Midnight',
       brand: 'Apex',
       slug: 'apex-midnight',
-      price: '$14,200',
+      price: '€14,200',
       image: '/apex-front.jpg',
-      description: 'The Apex Midnight represents the pinnacle of dark aesthetics, featuring a brushed black steel case and deep sapphire crystal.',
-      stock: 5,
+      description: 'The Apex Midnight represents the pinnacle of dark aesthetics, featuring a brushed Grade 5 titanium case with a Diamond-Like Carbon (DLC) coating for unparalleled scratch resistance and a stealth silhouette.',
     },
     {
       name: 'Apex Gold Edition',
       brand: 'Apex',
       slug: 'apex-gold',
-      price: '$28,500',
+      price: '€28,500',
       image: '/Apex_Watche.webp',
-      description: 'A masterpiece of precision, the Gold Edition combines Apex engineering with 18k yellow gold accents.',
-      stock: 3,
+      description: 'A masterpiece of horological engineering, the Gold Edition combines our signature skeletonized movement with hand-polished 18k yellow gold bridges and a bespoke alligator leather strap.',
     },
     {
       name: 'Luna Silver',
       brand: 'Luna',
       slug: 'luna-silver',
-      price: '$12,800',
+      price: '€12,800',
       image: '/luna-front.jpg',
-      description: 'Inspired by the moon, the Luna Silver features a moon-phase complication and a polished silver finish.',
-      stock: 7,
+      description: 'Inspired by the celestial rhythm, the Luna Silver features an astronomical moon-phase complication accurate to 122 years, encased in a polished 904L stainless steel frame.',
     },
     {
       name: 'Heritage Classic',
       brand: 'Heritage',
       slug: 'heritage-classic',
-      price: '$9,500',
+      price: '€9,500',
       image: '/heritage.jpg',
-      description: 'A timeless design that pays homage to the golden age of watchmaking.',
-      stock: 12,
+      description: 'The Heritage Classic is a tribute to the golden age of grand complications, featuring a cream enamel dial and a manual-wind calibre that whispers centuries of tradition.',
     },
     {
       name: 'Sky Aviator',
       brand: 'Aero',
       slug: 'sky-aviator',
-      price: '$8,200',
+      price: '€8,200',
       image: '/richard-front.jpg',
-      description: 'A professional-grade pilot watch with high-contrast numerals and GMT functionality.',
-      stock: 10,
+      description: 'Engineered for the cockpit, the Sky Aviator combines a high-beat GMT movement with a bidirectional slide-rule bezel, finished in a matte sandblasted titanium case.',
     },
     {
       name: 'Nebula Tourbillon',
       brand: 'Celeste',
       slug: 'nebula-tourbillon',
-      price: '$95,000',
+      price: '€95,000',
       image: '/macro-watch.jpg',
-      description: 'A gravity-defying tourbillon movement encased in a crystalline skeleton frame.',
-      stock: 2,
+      description: 'A gravity-defying tourbillon movement that appears to float within a crystalline sapphire case, the Nebula is a purely mechanical triumph of modern watchmaking.',
     },
     {
       name: 'Ocean Master',
       brand: 'Marina',
       slug: 'ocean-master',
-      price: '$11,400',
+      price: '€11,400',
       image: '/watch1.jpg',
-      description: 'Engineered for the depths, the Ocean Master features a 500m water resistance rating.',
-      stock: 15,
+      description: 'Forged for the abyss, the Ocean Master is tested to a depth of 500 meters, featuring a helium escape valve and a luminescent ceramic bezel for ultimate legibility.',
     },
     {
       name: 'Vanguard Steel',
       brand: 'Vanguard',
       slug: 'vanguard-steel',
-      price: '$7,900',
+      price: '€7,900',
       image: '/watch2.jpg',
-      description: 'Robust and reliable, the Vanguard Steel is the ultimate everyday companion for the modern explorer.',
-      stock: 20,
+      description: 'The Vanguard Steel is the definitive sports watch—robust, elegant, and featuring an integrated steel bracelet that flows seamlessly from the brushed case.',
     },
     {
       name: 'Eclipse Shadow',
       brand: 'Photon',
       slug: 'eclipse-shadow',
-      price: '$18,600',
+      price: '€18,600',
       image: '/watch3.jpg',
-      description: 'A limited edition model featuring ultra-black coating and luminous complications.',
-      stock: 4,
+      description: 'A study in darkness and light, the Eclipse Shadow uses Vantablack-inspired coating on the dial to create a void-like effect, contrasted by luminous platinum markers.',
     },
   ];
 
-  console.log('Cleaning up existing products...');
+  console.log('Cleaning up existing data...');
   await prisma.orderItem.deleteMany({});
+  await prisma.order.deleteMany({});
   await prisma.product.deleteMany({});
 
-  console.log('Seeding new products...');
+  console.log('Seeding enriched product catalog...');
   for (const watch of watches) {
     await prisma.product.create({
-      data: watch,
+      data: {
+        ...watch,
+        stock: 5,
+      },
     });
   }
 
-  console.log('Seeded', watches.length, 'products successfully.');
+  console.log('Seeded', watches.length, 'luxury timepieces successfully.');
 }
 
 main()

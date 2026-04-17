@@ -10,10 +10,10 @@ export async function PATCH(
   try {
     // 1. Await the params to get the ID
     const { id } = await params;
-    
+
     // 2. Get the body data
     const { status } = await request.json();
-    
+
     // 3. Convert the ID to a number for Prisma
     const orderId = parseInt(id);
 

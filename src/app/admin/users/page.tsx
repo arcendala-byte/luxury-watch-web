@@ -50,13 +50,13 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="p-8">
+    <div>
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
-        <h1 className="text-4xl font-light tracking-[0.2em] uppercase text-white mb-2">
+        <h1 className="text-3xl md:text-4xl font-light tracking-[0.2em] uppercase text-white mb-2">
           Users
         </h1>
-        <p className="text-white/60">Manage customer accounts</p>
+        <p className="text-white/60 text-xs md:text-sm">Manage customer accounts</p>
       </motion.div>
 
       {/* Users Table */}

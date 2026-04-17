@@ -49,7 +49,7 @@ export default function CollectionPageContent() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex items-center gap-6 mb-12"
+          className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-12"
         >
           <Link
             href="/"
@@ -90,7 +90,7 @@ export default function CollectionPageContent() {
             <h2 className="text-[#D4AF37] text-[10px] uppercase tracking-[0.5em] mb-4 font-medium">
               The Collection
             </h2>
-            <h1 className="text-5xl md:text-7xl text-white font-extralight tracking-tighter leading-none">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl text-white font-extralight tracking-tighter leading-none">
               Curated <br /> Masterpieces
             </h1>
             {activeBrand && activeBrand !== 'All' && (

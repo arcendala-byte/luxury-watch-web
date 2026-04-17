@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import CustomCursor from '@/components/CustomCursor';
-import CartDrawer from '@/components/CartDrawer'; // ✅ Ensure this path is correct
+import ClientLayout from '@/components/ClientLayout';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,17 +24,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" data-scroll-behavior="smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black cursor-none text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white overflow-x-hidden`}
       >
-        {/* Global UI Components */}
-        <CustomCursor />
-        <CartDrawer /> {/* ✅ Cart is now globally available */}
-        
-        <main>
+        <ClientLayout>
           {children}
-        </main>
+        </ClientLayout>
       </body>
     </html>
   );

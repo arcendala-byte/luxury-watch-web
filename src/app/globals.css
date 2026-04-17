@@ -8,7 +8,6 @@
 
 /* Base smooth scrolling and behavior */
 html {
-  scroll-behavior: smooth;
   background-color: var(--background);
 }
 /* Ensure sections have enough padding for the fixed navbar */

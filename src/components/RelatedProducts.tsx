@@ -35,7 +35,7 @@ export default function RelatedProducts({ currentSlug, brand }: RelatedProductsP
   if (displayProducts.length === 0) return null;
 
   return (
-    <section className="py-24 border-t border-white/5 bg-stone-950/30">
+    <section className="relative py-24 border-t border-white/5 bg-stone-950/30">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         
         {/* Header with Decorative Line */}

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from 'react';
-import { motion, Variants, AnimatePresence, useScroll } from 'framer-motion';
+import { motion, Variants, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronDown, ShieldCheck, Truck, RotateCcw, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -43,8 +43,7 @@ export default function ProductDetails({ product }: Props) {
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
   const [activeImage, setActiveImage] = useState<string | null>(null);
 
-  // Parallax Ref
-  const containerRef = useRef<HTMLElement>(null);
+  // State for specs and inquiry
   
   const currentDisplayImage = activeImage || product.image;
   const galleryImages = product.images || [product.image];
@@ -56,11 +55,11 @@ export default function ProductDetails({ product }: Props) {
   };
 
   return (
-    <main ref={containerRef} className="min-h-screen bg-black text-white pt-32 pb-20 selection:bg-[#D4AF37] selection:text-black">
+    <main className="relative min-h-screen bg-black text-white pt-32 pb-20 selection:bg-[#D4AF37] selection:text-black">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         
         {/* --- NAVIGATION BUTTONS --- */}
-        <div className="flex items-center gap-6 mb-12">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-12">
           <Link
             href="/"
             className="inline-flex items-center gap-3 text-white/60 hover:text-[#D4AF37] uppercase tracking-[0.4em] text-[10px] group transition-colors duration-500"
@@ -95,13 +94,7 @@ export default function ProductDetails({ product }: Props) {
           
           {/* LEFT: Image & Gallery Section */}
           <div className="flex flex-col gap-6">
-            <motion.div
-              key={currentDisplayImage}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="relative aspect-[4/5] bg-stone-900 border border-white/5 overflow-hidden group cursor-crosshair"
-            >
+            <div className="relative aspect-[4/5] bg-stone-900 border border-white/5 overflow-hidden group cursor-crosshair">
               {product.isLimited && (
                 <div className="absolute top-6 left-6 z-10">
                   <motion.div 
@@ -114,23 +107,33 @@ export default function ProductDetails({ product }: Props) {
                 </div>
               )}
 
-              <Image
-                src={formatImagePath(currentDisplayImage)}
-                alt={product.name}
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.3]"
-                onMouseMove={(e) => {
-                  const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-                  const x = ((e.clientX - left) / width) * 100;
-                  const y = ((e.clientY - top) / height) * 100;
-                  e.currentTarget.style.transformOrigin = `${x}% ${y}%`;
-                }}
-              />
-              
-              <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.4)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-            </motion.div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentDisplayImage}
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={formatImagePath(currentDisplayImage)}
+                    alt={product.name}
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.5]"
+                    onMouseMove={(e) => {
+                      const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+                      const x = ((e.clientX - left) / width) * 100;
+                      const y = ((e.clientY - top) / height) * 100;
+                      e.currentTarget.style.transformOrigin = `${x}% ${y}%`;
+                    }}
+                  />
+                  <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.6)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
             {/* Thumbnail Row */}
             {galleryImages.length > 1 && (
@@ -139,8 +142,8 @@ export default function ProductDetails({ product }: Props) {
                   <button
                     key={index}
                     onClick={() => setActiveImage(img)}
-                    className={`relative aspect-square border transition-all duration-500 overflow-hidden ${
-                      currentDisplayImage === img ? 'border-[#D4AF37]' : 'border-white/5 hover:border-white/20'
+                    className={`relative aspect-square border transition-all duration-700 overflow-hidden group ${
+                      currentDisplayImage === img ? 'border-[#D4AF37] scale-95 shadow-[0_0_20px_rgba(212,175,55,0.2)]' : 'border-white/5 hover:border-white/20'
                     }`}
                   >
                     <Image
@@ -148,8 +151,14 @@ export default function ProductDetails({ product }: Props) {
                       alt={`${product.name} view ${index}`}
                       fill
                       sizes="120px"
-                      className={`object-cover transition-opacity duration-500 ${currentDisplayImage === img ? 'opacity-100' : 'opacity-40 hover:opacity-80'}`}
+                      className={`object-cover transition-all duration-700 ${currentDisplayImage === img ? 'opacity-100 scale-110' : 'opacity-30 grayscale hover:opacity-100 hover:grayscale-0'}`}
                     />
+                    {currentDisplayImage === img && (
+                      <motion.div 
+                        layoutId="activeThumb"
+                        className="absolute inset-x-0 bottom-0 h-0.5 bg-[#D4AF37]" 
+                      />
+                    )}
                   </button>
                 ))}
               </div>
@@ -173,7 +182,7 @@ export default function ProductDetails({ product }: Props) {
               >
                 {product.brand}
               </motion.p>
-              <h1 className="text-6xl md:text-8xl font-extralight tracking-tighter leading-[0.9] mb-4">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-extralight tracking-tighter leading-[0.9] mb-4">
                 {product.name.split(' ').map((word, i) => (
                   <span key={i} className={i % 2 !== 0 ? "italic font-serif block md:inline" : ""}>
                     {word}{" "}

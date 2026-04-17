@@ -79,7 +79,7 @@ export default function Footer() {
             links={[
               { label: 'Collections', href: '/collection' },
               { label: 'Our Heritage', href: '/heritage' },
-              { label: 'Craftsmanship', href: '/heritage#craft' },
+              { label: 'Our Story', href: '/about' },
               { label: 'Boutiques', href: '/boutiques' },
             ]} 
           />
@@ -88,9 +88,9 @@ export default function Footer() {
             title="Client Care" 
             links={[
               { label: 'Contact Us', href: '/contact' },
-              { label: 'Private Viewings', href: '/contact' },
-              { label: 'Shipping & Returns', href: '#' },
-              { label: 'Warranty', href: '#' },
+              { label: 'Shipping & Returns', href: '/shipping' },
+              { label: 'Warranty & Service', href: '/warranty' },
+              { label: 'Accessibility', href: '/accessibility' },
             ]} 
           />
         </div>
@@ -104,7 +104,7 @@ export default function Footer() {
           <div className="flex gap-12 text-white/20 text-[9px] uppercase tracking-[0.4em]">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-            <Link href="#" className="hover:text-white transition-colors">Cookies</Link>
+            <Link href="/cookies" className="hover:text-white transition-colors">Cookies</Link>
           </div>
         </div>
       </div>

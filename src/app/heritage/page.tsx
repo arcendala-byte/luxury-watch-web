@@ -40,7 +40,7 @@ export default function HeritagePage() {
   const leaveLink = () => setCursorVariant("default");
 
   return (
-    <main ref={containerRef} className="min-h-screen bg-[#050505] cursor-none selection:bg-[#D4AF37] selection:text-black overflow-x-hidden">
+    <main ref={containerRef} className="relative min-h-screen bg-[#050505] cursor-none selection:bg-[#D4AF37] selection:text-black overflow-x-hidden">
       
       {/* CUSTOM CURSOR */}
       <motion.div
@@ -65,7 +65,7 @@ export default function HeritagePage() {
             <span className="text-[#D4AF37] text-[10px] uppercase tracking-[1.2em] mb-6 block font-bold">
               ESTABLISHED IN SWITZERLAND
             </span>
-            <h1 className="text-8xl md:text-[14rem] font-light tracking-tighter text-white leading-[0.8] mb-4">
+            <h1 className="text-5xl md:text-7xl lg:text-[14rem] font-light tracking-tighter text-white leading-[0.8] mb-4">
               CHRONOS<br/>
               <span className="italic font-serif text-[#D4AF37] tracking-normal">2025</span>
             </h1>
@@ -112,7 +112,7 @@ export default function HeritagePage() {
         </div>
         
         {/* TIMELINE OVERLAY */}
-        <div id="timeline" className="max-w-7xl mx-auto mt-40 grid md:grid-cols-4 gap-8">
+        <div id="timeline" className="max-w-7xl mx-auto mt-40 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {timeline.map((item, index) => (
             <motion.div 
               key={index} 

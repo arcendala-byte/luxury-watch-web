@@ -71,7 +71,7 @@ export default function Hero() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 1 }}
-          className="text-4xl md:text-6xl font-extralight text-white tracking-tighter"
+          className="text-4xl md:text-5xl lg:text-6xl font-extralight text-white tracking-tighter"
         >
           Apex <br /> Skeleton
         </motion.h2>

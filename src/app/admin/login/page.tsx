@@ -69,17 +69,17 @@ export default function AdminLoginPage() {
 
           {error && <div className="text-red-400 text-sm">{error}</div>}
 
-          <div className="flex items-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-[#D4AF37] text-black px-4 py-2 rounded-lg hover:bg-[#D4AF37]/90 disabled:opacity-50 transition-all duration-200"
+              className="w-full sm:flex-1 bg-[#D4AF37] text-black px-4 py-3 rounded-lg hover:bg-[#D4AF37]/90 disabled:opacity-50 transition-all duration-200"
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
             <a
               href="/"
-              className="flex-1 text-center border border-white/20 text-white px-4 py-2 rounded-lg hover:border-[#D4AF37]/50 transition-colors duration-200"
+              className="w-full sm:flex-1 text-center border border-white/20 text-white px-4 py-3 rounded-lg hover:border-[#D4AF37]/50 transition-colors duration-200"
             >
               Home
             </a>

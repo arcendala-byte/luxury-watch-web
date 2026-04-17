@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion';
 import { AlertCircle, RefreshCw } from 'lucide-react';
 import { useEffect } from 'react';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export default function Error({
@@ -20,7 +19,7 @@ export default function Error({
 
   return (
     <main className="min-h-screen bg-black text-white flex flex-col">
-      <Navbar />
+      
       
       <section className="flex-1 flex flex-col items-center justify-center px-6 pt-32 relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#D4AF37]/5 blur-[120px] rounded-full pointer-events-none" />

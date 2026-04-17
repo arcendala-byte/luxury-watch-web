@@ -51,13 +51,18 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       id: 'heritage',
       title: 'Heritage',
       links: [
-        { name: 'Our Story', href: '/heritage#heritage' },
+        { name: 'Our Story', href: '/about' },
         { name: 'Craftsmanship', href: '/heritage#craft' },
         { name: 'Historical Timeline', href: '/heritage#timeline' },
         { name: 'Archive Vault', href: '/heritage#vault' },
       ]
     },
     { id: 'boutiques', title: 'Boutiques', href: '/boutiques' },
+    { id: 'client-care', title: 'Client Care', links: [
+        { name: 'Contact Service', href: '/contact' },
+        { name: 'Shipping Protocols', href: '/shipping' },
+        { name: 'The Commitment (Warranty)', href: '/warranty' },
+    ]},
   ];
 
   const toggleSection = (id: string) => {

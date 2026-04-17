@@ -9,7 +9,7 @@ const locations = [
   {
     city: "Geneva",
     address: "Rue du Rhône 42, 1204 Genève",
-    phone: "+41 22 310 00 00",
+    phone: "+254 1 139 373 042",
     hours: "10:00 AM - 6:30 PM",
     image: "https://images.unsplash.com/photo-1580674285054-bed31e145f59?q=80&w=1000",
     specialty: "Flagship & Restoration Atelier"
@@ -17,7 +17,7 @@ const locations = [
   {
     city: "Paris",
     address: "22 Place Vendôme, 75001 Paris",
-    phone: "+33 1 42 60 00 00",
+    phone: "+254 7 466 12 060",
     hours: "10:30 AM - 7:00 PM",
     image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1000",
     specialty: "High Jewelry Timepieces"
@@ -25,7 +25,7 @@ const locations = [
   {
     city: "New York",
     address: "711 Fifth Avenue, NY 10022",
-    phone: "+1 212 750 00 00",
+    phone: "+254 780 003 817",
     hours: "10:00 AM - 6:00 PM",
     image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e3e9?q=80&w=1000",
     specialty: "Limited Edition Lounge"
@@ -41,9 +41,9 @@ const services = [
 
 export default function BoutiquesPage() {
   return (
-    <main className="min-h-screen bg-[#050505] text-white pt-32 pb-24">
+    <main className="relative min-h-screen bg-[#050505] text-white pt-32 pb-24">
       {/* Header Section */}
-      <section className="max-w-7xl mx-auto px-6 md:px-12 mb-32">
+      <section className="relative max-w-7xl mx-auto px-6 md:px-12 mb-32">
         <motion.div 
           initial="initial"
           animate="animate"
@@ -53,7 +53,7 @@ export default function BoutiquesPage() {
           <span className="text-[#D4AF37] text-[10px] uppercase tracking-[0.6em] mb-4 block">
             The World of Chronos
           </span>
-          <h1 className="text-5xl md:text-7xl font-light uppercase tracking-widest mb-8 leading-tight">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-light uppercase tracking-widest mb-8 leading-tight">
             Our <span className="italic">Sanctuaries</span>
           </h1>
           <p className="text-white/40 text-sm md:text-base leading-relaxed tracking-wide max-w-xl">
@@ -63,7 +63,7 @@ export default function BoutiquesPage() {
       </section>
 
       {/* Boutique Experience Grid */}
-      <section className="max-w-7xl mx-auto px-6 md:px-12 mb-32">
+      <section className="relative max-w-7xl mx-auto px-6 md:px-12 mb-32">
         <div className="flex flex-col gap-32">
           {locations.map((loc, index) => (
             <motion.div
@@ -119,7 +119,7 @@ export default function BoutiquesPage() {
       </section>
 
       {/* Services Section */}
-      <section className="border-y border-white/5 bg-[#080808] py-24">
+      <section className="relative border-y border-white/5 bg-[#080808] py-24">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
                 {services.map((service, i) => (

@@ -3,13 +3,11 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export default function NotFound() {
   return (
     <main className="min-h-screen bg-black text-white selection:bg-[#D4AF37] selection:text-black flex flex-col">
-      <Navbar />
       
       <section className="flex-1 flex flex-col items-center justify-center relative overflow-hidden px-6 pt-32">
         <div className="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">

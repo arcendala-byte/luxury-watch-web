@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Search, Menu, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence, Variants, useScroll, useSpring } from 'framer-motion';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 // Components
 import MobileMenu from './MobileMenu';
@@ -51,6 +52,8 @@ export default function Navbar() {
     restDelta: 0.001
   });
 
+  const pathname = usePathname();
+
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
@@ -72,6 +75,10 @@ export default function Navbar() {
     { name: 'Archive Vault', href: '/heritage#vault' },
   ];
 
+  const isCollectionsActive = pathname.startsWith('/collection') || pathname.startsWith('/product');
+  const isHeritageActive = pathname.startsWith('/heritage');
+  const isBoutiquesActive = pathname === '/boutiques';
+
   return (
     <>
       <nav 
@@ -91,14 +98,14 @@ export default function Navbar() {
           <div className="flex-1">
             <Magnetic>
               <Link href="/" className="inline-block" aria-label="Home">
-                <span className="text-xl md:text-2xl font-light tracking-[0.6em] uppercase text-white hover:text-[#D4AF37] transition-colors duration-500">
+                <span className={`text-xl md:text-2xl font-light tracking-[0.6em] uppercase transition-colors duration-500 ${pathname === '/' ? 'text-[#D4AF37]' : 'text-white hover:text-[#D4AF37]'}`}>
                   Chronos
                 </span>
               </Link>
             </Magnetic>
           </div>
           
-          <div className="hidden md:flex gap-2 text-[10px] uppercase tracking-[0.4em] font-light text-white/70 items-center">
+          <div className="hidden md:flex gap-2 text-[10px] uppercase tracking-[0.4em] font-light items-center">
             
             {/* Collections Dropdown */}
             <div 
@@ -108,13 +115,16 @@ export default function Navbar() {
             >
               <Magnetic>
                 <div className="flex items-center gap-2 px-6 py-3 cursor-pointer group">
-                  <span className={`transition-colors duration-500 ${activeSubMenu === 'collections' ? 'text-[#D4AF37]' : 'group-hover:text-[#D4AF37]'}`}>
+                  <span className={`transition-colors duration-500 ${isCollectionsActive || activeSubMenu === 'collections' ? 'text-[#D4AF37]' : 'text-white/70 group-hover:text-[#D4AF37]'}`}>
                     Collections
                   </span>
                   <ChevronDown 
                     size={10} 
-                    className={`transition-transform duration-700 ${activeSubMenu === 'collections' ? 'rotate-180 text-[#D4AF37]' : ''}`} 
+                    className={`transition-transform duration-700 ${activeSubMenu === 'collections' ? 'rotate-180 text-[#D4AF37]' : isCollectionsActive ? 'text-[#D4AF37]' : 'text-white/30'}`} 
                   />
+                  {(isCollectionsActive || activeSubMenu === 'collections') && (
+                    <motion.div layoutId="navIndicator" className="absolute bottom-0 left-6 right-8 h-px bg-[#D4AF37]/50" />
+                  )}
                 </div>
               </Magnetic>
 
@@ -133,11 +143,11 @@ export default function Navbar() {
                         {collectionSubOptions.map((opt) => (
                           <motion.div key={opt.name} variants={itemVariants}>
                             <Link 
-                              href={opt.href} 
-                              onClick={() => setActiveSubMenu(null)}
-                              className="group flex items-center gap-4 text-white/40 hover:text-white transition-all duration-500"
+                               href={opt.href} 
+                               onClick={() => setActiveSubMenu(null)}
+                               className={`group flex items-center gap-4 transition-all duration-500 ${pathname === opt.href ? 'text-white' : 'text-white/40 hover:text-white'}`}
                             >
-                              <div className="h-[1px] w-0 bg-[#D4AF37] group-hover:w-4 transition-all duration-500" />
+                              <div className={`h-[1px] transition-all duration-500 bg-[#D4AF37] ${pathname === opt.href ? 'w-4' : 'w-0 group-hover:w-4'}`} />
                               <span className="text-[9px] tracking-[0.3em] whitespace-nowrap uppercase">
                                 {opt.name}
                               </span>
@@ -151,7 +161,7 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
-            {/* Heritage Dropdown (Updated) */}
+            {/* Heritage Dropdown */}
             <div 
               className="relative"
               onMouseEnter={() => setActiveSubMenu('heritage')}
@@ -159,13 +169,16 @@ export default function Navbar() {
             >
               <Magnetic>
                 <div className="flex items-center gap-2 px-6 py-3 cursor-pointer group">
-                  <span className={`transition-colors duration-500 ${activeSubMenu === 'heritage' ? 'text-[#D4AF37]' : 'group-hover:text-[#D4AF37]'}`}>
+                  <span className={`transition-colors duration-500 ${isHeritageActive || activeSubMenu === 'heritage' ? 'text-[#D4AF37]' : 'text-white/70 group-hover:text-[#D4AF37]'}`}>
                     Heritage
                   </span>
                   <ChevronDown 
                     size={10} 
-                    className={`transition-transform duration-700 ${activeSubMenu === 'heritage' ? 'rotate-180 text-[#D4AF37]' : ''}`} 
+                    className={`transition-transform duration-700 ${activeSubMenu === 'heritage' ? 'rotate-180 text-[#D4AF37]' : isHeritageActive ? 'text-[#D4AF37]' : 'text-white/30'}`} 
                   />
+                  {(isHeritageActive || activeSubMenu === 'heritage') && (
+                    <motion.div layoutId="navIndicator" className="absolute bottom-0 left-6 right-8 h-px bg-[#D4AF37]/50" />
+                  )}
                 </div>
               </Magnetic>
 
@@ -184,11 +197,11 @@ export default function Navbar() {
                         {heritageSubOptions.map((opt) => (
                           <motion.div key={opt.name} variants={itemVariants}>
                             <Link 
-                              href={opt.href} 
-                              onClick={() => setActiveSubMenu(null)}
-                              className="group flex items-center gap-4 text-white/40 hover:text-white transition-all duration-500"
+                               href={opt.href} 
+                               onClick={() => setActiveSubMenu(null)}
+                               className={`group flex items-center gap-4 transition-all duration-500 ${pathname === opt.href ? 'text-white' : 'text-white/40 hover:text-white'}`}
                             >
-                              <div className="h-[1px] w-0 bg-[#D4AF37] group-hover:w-4 transition-all duration-500" />
+                              <div className={`h-[1px] transition-all duration-500 bg-[#D4AF37] ${pathname === opt.href ? 'w-4' : 'w-0 group-hover:w-4'}`} />
                               <span className="text-[9px] tracking-[0.3em] whitespace-nowrap uppercase">
                                 {opt.name}
                               </span>
@@ -204,9 +217,17 @@ export default function Navbar() {
 
             {/* Boutiques Link */}
             <Magnetic>
-              <Link href="/boutiques" className="hover:text-[#D4AF37] transition-colors duration-700 px-6 py-3 block uppercase">
-                Boutiques
-              </Link>
+              <div className="relative">
+                <Link 
+                  href="/boutiques" 
+                  className={`transition-colors duration-700 px-6 py-3 block uppercase ${isBoutiquesActive ? 'text-[#D4AF37]' : 'text-white/70 hover:text-[#D4AF37]'}`}
+                >
+                  Boutiques
+                </Link>
+                {isBoutiquesActive && (
+                  <motion.div layoutId="navIndicator" className="absolute bottom-0 left-6 right-6 h-px bg-[#D4AF37]/50" />
+                )}
+              </div>
             </Magnetic>
           </div>
 

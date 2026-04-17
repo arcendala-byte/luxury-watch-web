@@ -63,7 +63,7 @@ export default function ProductShowcase() {
             >
               Curated Selection
             </motion.p>
-            <h2 className="text-5xl md:text-8xl font-extralight text-white leading-[1.1]">
+            <h2 className="text-4xl md:text-6xl lg:text-8xl font-extralight text-white leading-[1.1]">
               New <br /> <span className="italic font-serif">Arrivals</span>
             </h2>
             <p className="text-white/40 text-sm font-light max-w-xs leading-relaxed uppercase tracking-widest">

@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Check, Loader2 } from 'lucide-react';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useState } from 'react';
 
@@ -47,7 +46,6 @@ export default function ContactPage() {
 
   return (
     <main className="min-h-screen bg-black text-white selection:bg-[#D4AF37] selection:text-black">
-      <Navbar />
       
       <section className="pt-48 pb-32 px-6 md:px-12 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
@@ -78,7 +76,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="text-[10px] uppercase tracking-[0.3em] text-white/30 mb-1">Email</h3>
-                  <p className="text-sm tracking-widest uppercase">concierge@chronos.ch</p>
+                  <p className="text-sm tracking-widest lowercase">arcendala@gmail.com</p>
                 </div>
               </div>
 
@@ -88,7 +86,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="text-[10px] uppercase tracking-[0.3em] text-white/30 mb-1">Office</h3>
-                  <p className="text-sm tracking-widest uppercase">+41 22 310 00 00</p>
+                  <p className="text-sm tracking-widest uppercase">+254780003817</p>
                 </div>
               </div>
 
@@ -98,7 +96,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="text-[10px] uppercase tracking-[0.3em] text-white/30 mb-1">Atelier</h3>
-                  <p className="text-sm tracking-widest uppercase">Rue du Rhône 42, 1204 Genève</p>
+                  <p className="text-sm tracking-widest uppercase">nairobi, moi avenue</p>
                 </div>
               </div>
             </div>

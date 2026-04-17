@@ -27,7 +27,7 @@ export default function CollectionFilters({ brands, onFilterChange }: Collection
         />
       </form>
 
-      <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar w-full justify-start md:justify-end">
+      <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar w-full justify-start md:justify-end snap-x snap-mandatory scroll-smooth">
         {brands.map((brand) => {
           const href = `/collection?category=${encodeURIComponent(brand)}${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ''}`;
           const selected = activeBrand === brand;
@@ -35,7 +35,7 @@ export default function CollectionFilters({ brands, onFilterChange }: Collection
             <Link
               key={brand}
               href={href}
-              className={`text-[9px] uppercase tracking-widest px-5 py-2.5 border rounded-full transition-all duration-500 whitespace-nowrap ${
+              className={`text-[9px] uppercase tracking-widest px-5 py-2.5 border rounded-full transition-all duration-500 whitespace-nowrap snap-center ${
                 selected
                   ? 'bg-[#D4AF37] border-[#D4AF37] text-black font-bold'
                   : 'border-white/10 text-white/40 hover:border-white/30'

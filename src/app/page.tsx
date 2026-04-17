@@ -1,13 +1,13 @@
 "use client"
 import { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Navbar from '@/components/Navbar';
+import Link from 'next/link';
+import Hero from '@/components/Hero';
 import Heritage from '@/components/Heritage';
 import ProductGrid from '@/components/ProductGrid';
 import Craftsmanship from '@/components/Craftsmanship';
 import Footer from '@/components/Footer';
 import Loader from '@/components/Loader';
-import Link from 'next/link';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,9 +31,6 @@ export default function Home() {
           isLoading ? 'opacity-0' : 'opacity-100'
         }`}
       >
-        <Navbar />
-        
-        {/* 🎬 Hero Section with Video Background */}
         <section className="relative h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden">
           
           {/* Background Video Implementation */}
