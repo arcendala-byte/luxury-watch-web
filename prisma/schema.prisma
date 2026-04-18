@@ -5,7 +5,7 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL") // Added for Neon compatibility
+  directUrl = env("DIRECT_URL") 
 }
 
 model Product {
@@ -13,8 +13,8 @@ model Product {
   name         String
   brand        String
   slug         String      @unique
-  price        Float       // Changed to Float for dashboard calculations
-  image        String      @db.Text // Text type to support long base64 image strings
+  price        Float       
+  image        String      @db.Text 
   description  String?
   stock        Int
   
@@ -22,16 +22,16 @@ model Product {
   caseMaterial String?
   caseSize     String?
   thickness    String?
-  movement     String?     @default("Automatic")
+  movement     String?     @default("Mechanical Self-winding")
   caliber      String?
   powerReserve String?
   dialColor    String?
   dialPattern  String?
   bracelet     String?
   clasp        String?
-  features     String[]    // Array for complications (Date, Moonphase, etc.)
+  features     String[]    
   curatorNotes String?     @db.Text
-  status       String      @default("ACTIVE") // ACTIVE, LIMITED, ARCHIVED
+  status       String      @default("ACTIVE") 
 
   // relations
   orderItems   OrderItem[]
@@ -60,7 +60,7 @@ model Order {
   userId       Int
   items        OrderItem[]
   total        Float
-  status       String      @default("PENDING") // PENDING, PROCESSING, SHIPPED, DELIVERED
+  status       String      @default("PENDING") 
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 }
