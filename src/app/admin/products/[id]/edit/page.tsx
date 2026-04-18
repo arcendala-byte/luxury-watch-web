@@ -6,6 +6,9 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Save, Upload, Zap, ShieldCheck, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 
+// Tell Vercel this page must remain dynamic to avoid build-time fetch errors
+export const dynamic = 'force-dynamic';
+
 export default function EditProductPage() {
   const router = useRouter();
   const params = useParams();
@@ -28,15 +31,22 @@ export default function EditProductPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       if (!params.id) return;
+
+      // Determine the base URL: Use the env var in production, or relative in client
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      
       try {
-        const res = await fetch(`/api/products/${params.id}`);
-        if (!res.ok) throw new Error('Product not found');
+        const res = await fetch(`${baseUrl}/api/products/${params.id}`, {
+            cache: 'no-store'
+        });
+        
+        if (!res.ok) throw new Error('Product not found in Vault');
         const data = await res.json();
         
         setFormData({
           ...data,
-          price: data.price.toString(),
-          stock: data.stock.toString(),
+          price: data.price?.toString() || '0',
+          stock: data.stock?.toString() || '0',
           features: data.features || []
         });
         if (data.image) setImagePreview(data.image);
@@ -79,7 +89,7 @@ export default function EditProductPage() {
           ...formData,
           price: parseFloat(formData.price),
           stock: parseInt(formData.stock),
-          image: imagePreview // Sending base64 string to API
+          image: imagePreview 
         }),
       });
 
@@ -119,14 +129,19 @@ export default function EditProductPage() {
           </div>
         </div>
         <div className="flex gap-4">
-          <button onClick={handleSubmit} disabled={saving} className="px-8 py-3 bg-[#D4AF37] rounded-xl text-[10px] uppercase tracking-widest text-black font-bold hover:bg-[#b8962d] transition-all flex items-center gap-2">
+          <button 
+            type="button"
+            onClick={handleSubmit} 
+            disabled={saving} 
+            className="px-8 py-3 bg-[#D4AF37] rounded-xl text-[10px] uppercase tracking-widest text-black font-bold hover:bg-[#b8962d] transition-all flex items-center gap-2"
+          >
             {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
             {saving ? 'UPDATING...' : 'COMMIT CHANGES'}
           </button>
         </div>
       </div>
 
-      <form className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left: Media & Identity */}
         <div className="lg:col-span-4 space-y-8">
           <section className="bg-black/40 backdrop-blur-xl border border-white/5 rounded-3xl p-8 space-y-6">
@@ -157,7 +172,7 @@ export default function EditProductPage() {
           </section>
         </div>
 
-        {/* Right: Specs (Using same structure as New page for consistency) */}
+        {/* Right: Specs */}
         <div className="lg:col-span-8 bg-black/40 backdrop-blur-xl border border-white/5 rounded-3xl p-8 md:p-10">
            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               <div className="space-y-6">
