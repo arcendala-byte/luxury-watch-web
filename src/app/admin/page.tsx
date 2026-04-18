@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation'; // 1. Import useRouter
+import { useRouter } from 'next/navigation'; 
 import { TrendingUp, Package, ShoppingCart, Users, ArrowUpRight } from 'lucide-react';
 
 interface Stats {
@@ -13,7 +13,7 @@ interface Stats {
 }
 
 export default function AdminDashboard() {
-  const router = useRouter(); // 2. Initialize the router
+  const router = useRouter(); 
   
   const [stats, setStats] = useState<Stats>({
     totalProducts: 0,
@@ -26,6 +26,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        // Fetches data from src/app/api/admin/stats/route.ts
         const res = await fetch('/api/admin/stats');
         if (res.ok) {
           const data = await res.json();
@@ -42,10 +43,10 @@ export default function AdminDashboard() {
   }, []);
 
   const statCards = [
-    { label: 'Inventory', value: stats.totalProducts, icon: Package, detail: 'Items in vault' },
-    { label: 'Acquisitions', value: stats.totalOrders, icon: ShoppingCart, detail: 'Completed sales' },
-    { label: 'Clientele', value: stats.totalUsers, icon: Users, detail: 'Registered members' },
-    { label: 'Treasury', value: `€${(stats.totalRevenue || 0).toLocaleString()}`, icon: TrendingUp, detail: 'Gross volume' },
+    { label: 'Inventory', value: stats.totalProducts ?? 0, icon: Package, detail: 'Items in vault' },
+    { label: 'Acquisitions', value: stats.totalOrders ?? 0, icon: ShoppingCart, detail: 'Completed sales' },
+    { label: 'Clientele', value: stats.totalUsers ?? 0, icon: Users, detail: 'Registered members' },
+    { label: 'Treasury', value: `€${(stats.totalRevenue ?? 0).toLocaleString()}`, icon: TrendingUp, detail: 'Gross volume' },
   ];
 
   return (
@@ -74,7 +75,7 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative bg-white/[0.02] border border-white/5 rounded-2xl p-6 md:p-8 hover:bg-white/[0.04] transition-all duration-700 overflow-hidden"
+              className="group relative bg-white/[0.02] border border-white/5 rounded-2xl p-6 md:p-8 hover:bg-white/[0.04] transition-all duration-700 overflow-hidden cursor-pointer"
             >
               <div className="absolute top-0 right-0 w-24 h-24 bg-[#D4AF37]/5 blur-3xl -mr-12 -mt-12 group-hover:bg-[#D4AF37]/10 transition-colors duration-700" />
               

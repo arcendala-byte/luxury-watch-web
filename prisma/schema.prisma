@@ -3,53 +3,74 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" // Changed from "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // Added for Neon compatibility
 }
 
 model Product {
-  id          Int         @id @default(autoincrement())
-  name        String
-  brand       String
-  slug        String      @unique
-  price       String
-  image       String
-  description String?
-  stock       Int
+  id           Int         @id @default(autoincrement())
+  name         String
+  brand        String
+  slug         String      @unique
+  price        Float       // Changed to Float for dashboard calculations
+  image        String      @db.Text // Text type to support long base64 image strings
+  description  String?
+  stock        Int
+  
+  // Chronos Horological Specifications
+  caseMaterial String?
+  caseSize     String?
+  thickness    String?
+  movement     String?     @default("Automatic")
+  caliber      String?
+  powerReserve String?
+  dialColor    String?
+  dialPattern  String?
+  bracelet     String?
+  clasp        String?
+  features     String[]    // Array for complications (Date, Moonphase, etc.)
+  curatorNotes String?     @db.Text
+  status       String      @default("ACTIVE") // ACTIVE, LIMITED, ARCHIVED
 
   // relations
-  orderItems  OrderItem[]
+  orderItems   OrderItem[]
 
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  orders    Order[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           Int         @id @default(autoincrement())
+  email        String      @unique
+  name         String?
+  
+  // Required for Member Registry
+  role         String      @default("CLIENT") // ADMIN, CONCIERGE, CLIENT
+  status       String      @default("ACTIVE") // ACTIVE, SUSPENDED, PENDING
+  
+  orders       Order[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
 
 model Order {
-  id        Int         @id @default(autoincrement())
-  user      User        @relation(fields: [userId], references: [id])
-  userId    Int
-  items     OrderItem[]
-  total     Float
-  status    String      @default("pending")
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id           Int         @id @default(autoincrement())
+  user         User        @relation(fields: [userId], references: [id])
+  userId       Int
+  items        OrderItem[]
+  total        Float
+  status       String      @default("PENDING") // PENDING, PROCESSING, SHIPPED, DELIVERED
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
 
 model OrderItem {
-  id        Int      @id @default(autoincrement())
-  order     Order    @relation(fields: [orderId], references: [id])
-  orderId   Int
-  product   Product  @relation(fields: [productId], references: [id])
-  productId Int
-  quantity  Int
-  price     Float
+  id           Int         @id @default(autoincrement())
+  order        Order       @relation(fields: [orderId], references: [id])
+  orderId      Int
+  product      Product     @relation(fields: [productId], references: [id])
+  productId    Int
+  quantity     Int
+  price        Float
 }
