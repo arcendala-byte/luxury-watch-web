@@ -84,11 +84,23 @@ async function main() {
   await prisma.product.deleteMany({});
 
   console.log('Seeding enriched product catalog...');
+  
   for (const watch of watches) {
+    // 1. Convert "€14,200" string to numeric 14200
+    const numericPrice = parseFloat(watch.price.replace(/[€,]/g, ''));
+
+    // 2. Create the record with explicit mapping to satisfy TypeScript
     await prisma.product.create({
       data: {
-        ...watch,
-        stock: 5,
+        name: watch.name,
+        brand: watch.brand,
+        slug: watch.slug,
+        price: numericPrice, // Float type
+        image: watch.image,
+        description: watch.description,
+        stock: 5,           // Int type
+        status: "ACTIVE",   // Default string
+        movement: "Mechanical Self-winding" 
       },
     });
   }
