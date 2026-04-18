@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Save, Upload, Zap, ShieldCheck, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 
-// Tell Vercel this page must remain dynamic to avoid build-time fetch errors
+// Force dynamic ensures Vercel doesn't try to pre-render this admin route
 export const dynamic = 'force-dynamic';
 
 export default function EditProductPage() {
@@ -31,25 +31,25 @@ export default function EditProductPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       if (!params.id) return;
-
-      // Determine the base URL: Use the env var in production, or relative in client
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
       
       try {
-        const res = await fetch(`${baseUrl}/api/products/${params.id}`, {
-            cache: 'no-store'
-        });
-        
-        if (!res.ok) throw new Error('Product not found in Vault');
-        const data = await res.json();
-        
-        setFormData({
-          ...data,
-          price: data.price?.toString() || '0',
-          stock: data.stock?.toString() || '0',
-          features: data.features || []
-        });
-        if (data.image) setImagePreview(data.image);
+        // STRICT CLIENT-SIDE GUARD: Prevents build-time URL parsing errors
+        if (typeof window !== 'undefined') {
+          const res = await fetch(`/api/products/${params.id}`, {
+              cache: 'no-store'
+          });
+          
+          if (!res.ok) throw new Error('Product not found in Vault');
+          const data = await res.json();
+          
+          setFormData({
+            ...data,
+            price: data.price?.toString() || '0',
+            stock: data.stock?.toString() || '0',
+            features: data.features || []
+          });
+          if (data.image) setImagePreview(data.image);
+        }
       } catch (error) {
         console.error("Friction in retrieval:", error);
       } finally {
@@ -115,7 +115,6 @@ export default function EditProductPage() {
 
   return (
     <div className="space-y-10 pb-20 max-w-[1400px] mx-auto">
-      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-6">
           <button onClick={() => router.back()} className="p-3 bg-white/[0.03] border border-white/5 rounded-full text-white/40 hover:text-[#D4AF37] transition-all">
@@ -142,7 +141,6 @@ export default function EditProductPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left: Media & Identity */}
         <div className="lg:col-span-4 space-y-8">
           <section className="bg-black/40 backdrop-blur-xl border border-white/5 rounded-3xl p-8 space-y-6">
             <h2 className="text-[10px] uppercase tracking-[0.3em] text-[#D4AF37] font-semibold">Asset Preview</h2>
@@ -172,7 +170,6 @@ export default function EditProductPage() {
           </section>
         </div>
 
-        {/* Right: Specs */}
         <div className="lg:col-span-8 bg-black/40 backdrop-blur-xl border border-white/5 rounded-3xl p-8 md:p-10">
            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               <div className="space-y-6">
